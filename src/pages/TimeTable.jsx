@@ -1,13 +1,10 @@
 import { Link } from "react-router-dom";
 
-function myFunction() {
-  document.getElementById("myDropdown").classList.toggle("show");
-}
 
 export default function TimeTable() {
   return (
     <div className="main">
-      <div className="navbar">
+      <div className="navbartimetable">
         <div className="goback">
           <Link className="goback-link" to="/">X Gå tillbaka</Link>
         </div>
@@ -15,19 +12,22 @@ export default function TimeTable() {
       <div className="timetablemain">
         <div className="timetableupper">
           <div className="stationchooser">
-            <button onclick="myFunction()" className="stationchooserdropdown">Välj Avgångsstation</button>
-            <div id="myDropdown" class="dropdown-content">
-              <a href="#home">Home</a>
-              <a href="#about">About</a>
-              <a href="#contact">Contact</a>
-            </div>
+            <select className="stationval">
+              <option value="stockholm">Stockholm</option>
+              <option value="goteborg">Göteborg</option>
+            </select>
           </div>
           <div className="datechooser">
-
+            <input className="dateTable" type="date"></input>
           </div>
         </div>
         <div className="timetablelower">
-
+          <div className="timetableheader">
+            <div className="headeritem">Tågnr</div>
+            <div className="headeritem">Sträcka</div>
+            <div className="headeritem">Avgångsdatum</div>
+            <div className="headeritem">Avgångstid</div>
+          </div>
         </div>
       </div>
     </div>
