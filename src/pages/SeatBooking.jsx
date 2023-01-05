@@ -1,13 +1,12 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import store from '../functions/localstorage'
-
-import SeatChooser from '../components/SeatChooser'
-import carriageImg from '../images/carriage-type-2.jpg'
-
 
 export default function SeatBooking() {
 
   let data = store;
+  const navigate = useNavigate();
+
 
   return (
     <div className="main">
@@ -22,17 +21,10 @@ export default function SeatBooking() {
         <div className="content">
           <div className="user-data" style={{ borderStyle: "solid", borderColor: "red", width: "100%" }}>
             <h3>Plats bokning för rutt : {data.originStation} - {data.destinationStation} </h3>
+            <p>{JSON.stringify(data.routeData)}</p>
+            <button onClick={() => confirmBookingAndTickets(data)}>Confirm booking</button>
 
-            {/* <h3>data[0]</h3> */}
-            {/* Just uncomment to see our data from booking page */}
-            {/* {JSON.stringify(data)}; */}
 
-            <div className="carriage-content" style={{ display: "flex", justifyContent: "center", borderStyle: "solid", borderColor: "red" }}>
-              <img className="carriage" src={carriageImg} alt="carriage image" style={{ display: "flex", justifyContent: "center", borderStyle: "solid", borderColor: "magenta" }} />
-
-            </div>
-
-            {/* <input className="indexInput" placeholder="Highlight index" onChange={(e) => highlightIndex(e.target.value)}></input> */}
           </div>
         </div>
       </div>
@@ -42,4 +34,51 @@ export default function SeatBooking() {
       <Link className="temp-pay-link" to="/payment">Temp goto payment</Link>
     </div>
   )
+
+
+  async function createBooking(data) {
+    const response = await fetch('http://localhost:3000/api/booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        ticketAmount: 1,
+        routeId: data.routeId,
+        totalPrice: 100
+      })
+    });
+    return await response.json();
+  }
+
+  async function createTicket(data, bookingResponse) {
+    const ticketresponse = await fetch('http://localhost:3000/api/tickets', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        bookingId: bookingResponse._id,
+        trainNumber: data.trainId,
+        route: data.routeId,
+        departureTime: data.date,
+        departureStation: data.originStationId,
+        arrivalStation: data.destinationStationId,
+        ticketPrice: 100
+      })
+    });
+    return await ticketresponse.json();
+
+  }
+
+  async function confirmBookingAndTickets(data) {
+
+    try {
+      const bookingResponse = await createBooking(data);
+      const ticketResponse = await createTicket(data, bookingResponse);
+      navigate('/ConfirmedTicketPage', { state: ticketResponse });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }
