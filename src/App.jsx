@@ -15,8 +15,7 @@ import Ticket from "./pages/Ticket"
 import Register from "./pages/Register"
 import GetTicket from "./pages/GetTicket"
 import Payment from "./pages/Payment"
-import Qr from "./pages/QrTestPage"
-import MyTicket from './pages/MyTicket'
+
 
 // Kinda late so creating it on the fly /Tim.
 import SeatBooking from "./pages/SeatBooking"
@@ -24,7 +23,7 @@ import SeatBooking from "./pages/SeatBooking"
 //Import connection to design
 //All files created in mapp sass should be imported in main.scss
 import "./sass/main.scss"
-
+import ConfirmedTicketPage from "./pages/ConfirmedTicketPage"
 
 export default function App() {
 
@@ -42,12 +41,14 @@ export default function App() {
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="/register" element={<Register />}></Route>
           <Route path="/get-ticket" element={<GetTicket />}></Route>
-          <Route path="/qr" element={<Qr />}></Route>
+          <Route path="/seatbooking" element={<SeatBooking />}></Route>
+          <Route path="ConfirmedTicketPage" element={<ConfirmedTicketPage />}></Route>
         </Routes>
 
       </BrowserRouter>
     </main>
   );
 }
+
 
 
